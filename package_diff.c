@@ -355,4 +355,3 @@ void main( int Argc, char* Argv[] )
 	update();
 	cleanup();
 }
-
