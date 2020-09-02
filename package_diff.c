@@ -309,9 +309,13 @@ void diff_print()
 					{
 						printf("%s-%s.%s\t|\t%s-%s.%s\n",li->name,li->ver,li->arch,dli->name,dli->ver,dli->arch);
 					}
+					tmp = li->prev;
 					remove_list(li);
-					li = li->prev;
+					li = tmp;
+					tmp = dli->prev;
 					remove_list(dli);
+					dli = tmp;
+					tmp = NULL;
 					break;
 				}
 			}
