@@ -1,3 +1,7 @@
+/*
+runtime remove list code delete : line 313 ~
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -100,17 +104,19 @@ void remove_list( struct cont *li )
 	if(li->name != NULL) { free(li->name); li->name = NULL;}
 	if(li->ver  != NULL) { free(li->ver ); li->ver  = NULL;}
 	if(li->arch != NULL) { free(li->arch); li->arch = NULL;}
+
 	if ( li != NULL )
 	{
 		if ( li == tail0 )
 		{
-			tail0 = li->prev;
+			if( li->prev != head0 ) tail0 = li->prev;
 			tail0->next = NULL;
 			free(li);
 			li=NULL;
 		}
 		else if ( li == tail1 )
 		{
+			if( li->prev != head1 ) tail1 = li->prev;
 			tail1 = li->prev;
 			tail1->next = NULL;
 			free(li);
@@ -190,8 +196,7 @@ int init( int n_arg, char *sz_arg[] )
 		return 1;
 	}
 	//File open;
-	int idx[2]={0,},ret=0,i=0;
-
+	int idx[2]={0,},ret=0,i=0,j=0;
 	for( i = 0 ; i < 2 ; ++i )
 	{
 		memset( szbuf[i], '\0', sizeof(char) * 127 );
@@ -308,14 +313,14 @@ void diff_print()
 					else
 					{
 						printf("%s-%s.%s\t|\t%s-%s.%s\n",li->name,li->ver,li->arch,dli->name,dli->ver,dli->arch);
-					}
+					}/*
 					tmp = li->prev;
 					remove_list(li);
 					li = tmp;
 					tmp = dli->prev;
 					remove_list(dli);
 					dli = tmp;
-					tmp = NULL;
+					tmp = NULL;*/
 					break;
 				}
 			}
