@@ -1,0 +1,28 @@
+kind: MachineConfig
+apiVersion: machineconfiguration.openshift.io/v1
+metadata:
+  name: 99-worker-reboot-task-growin
+  labels:
+    machineconfiguration.openshift.io/role: worker
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    systemd:
+      units:
+        - contents: |
+            [Unit]
+            Description=reboot task workaround by growin
+            DefaultDependencies=no
+            Before=shutdown.target
+            
+            [Service]
+            Type=oneshot
+            ExecStart=/usr/bin/bash -c '/usr/bin/sleep 5 && /usr/bin/echo b > /proc/sysrq-trigger'
+            TimeoutStartSec=0
+            
+            
+            [Install]
+            WantedBy=reboot.target
+          name: reboot-task-growin.service
+          enabled: true
